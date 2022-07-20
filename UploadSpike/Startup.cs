@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UploadSpike.Infrastructure.Dao;
+using UploadSpike.Infrastructure.Database;
+using UploadSpike.Infrastructure.Interfaces;
 
 namespace UploadSpike
 {
@@ -26,11 +30,15 @@ namespace UploadSpike
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<IImageDao, ImageDao>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UploadSpike", Version = "v1" });
+            });
+            services.AddDbContext<UploadDbContext>(o =>
+            {
+                o.UseSqlServer("data source=.;initial catalog = MyImagesDb;integrated security = true");
             });
         }
 
