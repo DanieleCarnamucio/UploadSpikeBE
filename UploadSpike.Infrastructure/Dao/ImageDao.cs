@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,10 @@ namespace UploadSpike.Infrastructure.Dao
 
         public ImageDto Post(ImageDto obj)
         {
-            return new ImageDto();
+            obj.Id = 1;
+            _dbContext.Images.Add(obj);
+            _dbContext.SaveChanges();
+            return obj;
         }
 
         public IEnumerable<ImageDto> Get()
