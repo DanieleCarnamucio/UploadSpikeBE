@@ -37,7 +37,7 @@ namespace UploadSpike.Infrastructure.Dao
             return _dbContext.Images;
         }
 
-        public static async Task<bool> UploadFileToStorage(Stream fileStream, string fileName,
+        public  async Task<bool> UploadFileToStorage(Stream fileStream, string fileName,
                                                     AzureStorageConfig _storageConfig)
         {
             // Create a URI to the blob
@@ -46,6 +46,12 @@ namespace UploadSpike.Infrastructure.Dao
                                   ".blob.core.windows.net/" +
                                   _storageConfig.ImageContainer +
                                   "/" + fileName);
+
+            var p = blobUri.ToString();
+            ImageDto imageDao = new ImageDto();
+            imageDao.Path = p;
+            _dbContext.Images.Add(imageDao);
+            _dbContext.SaveChanges();
 
             // Create StorageSharedKeyCredentials object by reading
             // the values from the configuration (appsettings.json)
