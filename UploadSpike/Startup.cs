@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 using UploadSpike.Infrastructure.Dao;
 using UploadSpike.Infrastructure.Database;
 using UploadSpike.Infrastructure.Interfaces;
+using UploadSpike.Mapper;
 
 namespace UploadSpike
 {
@@ -40,6 +42,11 @@ namespace UploadSpike
             {
                 o.UseSqlServer("data source=.;initial catalog = MyImagesDb;integrated security = true");
             });
+            services.AddAutoMapper(cfg => cfg.AddProfiles(new List<Profile>()
+            {
+                new UiProfile()
+            }
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

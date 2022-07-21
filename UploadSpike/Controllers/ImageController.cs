@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
 using UploadSpike.Infrastructure.Database;
@@ -15,10 +16,12 @@ namespace UploadSpike.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IImageDao _imageDao;
+        private readonly IMapper _mapper;
 
-        public ImageController(IImageDao imageDao)
+        public ImageController(IImageDao imageDao, IMapper mapper)
         {
             _imageDao = imageDao;
+            _mapper = mapper;
         }
 
         // GET: api/<ImageController>
@@ -34,10 +37,11 @@ namespace UploadSpike.Controllers
         {
         //http://www.binaryintellect.net/articles/2f55345c-1fcb-4262-89f4-c4319f95c5bd.aspx
         //https://docs.microsoft.com/en-us/azure/event-grid/storage-upload-process-images?tabs=dotnet%2Cazure-powershell
-
-            ImageDto img = new ImageDto();
-                img.Title = request.TitleImage;
-                img.Data = request.DataImage;
+            
+            var requestDto = _mapper.Map<ImageRequestModel, ImageDto>(request);
+            //ImageDto img = new ImageDto();
+                //img.Title = request.Title;
+                //img.Data = request.Data;
                 //MemoryStream ms = new MemoryStream();
                 //file.CopyTo(ms);
                 //img.Data = ms.ToArray();
@@ -45,7 +49,7 @@ namespace UploadSpike.Controllers
                 //ms.Close();
                 //ms.Dispose();
 
-                _imageDao.Post(img);
+                _imageDao.Post(requestDto);
                 
             
             //ViewBag.Message = "Image(s) stored in database!";

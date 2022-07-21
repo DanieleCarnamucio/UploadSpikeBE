@@ -11,7 +11,7 @@ namespace UploadSpike.Infrastructure.Dto
     public class ImageDto
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public byte[] Data { get; set; }
+        public string Path { get; set; }
+        //public byte[] Data { get; set; }
     }
 }
