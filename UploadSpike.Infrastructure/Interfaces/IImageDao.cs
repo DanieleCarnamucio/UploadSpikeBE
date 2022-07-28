@@ -8,7 +8,7 @@ using UploadSpike.Infrastructure.Dto;
 
 namespace UploadSpike.Infrastructure.Interfaces
 {
-    public interface IImageDao : ICreate<ImageDto>, IGet<IEnumerable<ImageDto>>
+    public interface IImageDao : ICreate<string>, IGet<IEnumerable<ImageDto>, string>
     {
     }
 }

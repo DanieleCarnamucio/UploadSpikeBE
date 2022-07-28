@@ -41,7 +41,10 @@ namespace UploadSpike.Controllers
         {
             IFormFile files = Request.Form.Files[0];
 
+
             string systemFileName = files.FileName;
+            _imageDao.Post(systemFileName);
+
             string blobstorageconnection = _configuration.GetValue<string>("BlobConnectionString");
             // Retrieve storage account from connection string.    
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobstorageconnection);
@@ -74,6 +77,19 @@ namespace UploadSpike.Controllers
             }
             Stream blobStream = blockBlob.OpenReadAsync().Result;
             return File(blobStream, blockBlob.Properties.ContentType, blockBlob.Name);
+        }
+
+
+        [HttpGet]
+        public IActionResult GetAll()
+        { 
+            return Ok(_imageDao.Get());
+        }
+
+        [HttpGet("{nameRequest}")]
+        public IActionResult GetByName( string nameRequest)
+        {
+            return Ok(_imageDao.GetBy(nameRequest));
         }
 
 
