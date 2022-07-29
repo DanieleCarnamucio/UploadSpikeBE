@@ -43,7 +43,7 @@ namespace UploadSpike.Controllers
 
 
             string systemFileName = files.FileName;
-            _imageDao.Post(systemFileName);
+            
 
             string blobstorageconnection = _configuration.GetValue<string>("BlobConnectionString");
             // Retrieve storage account from connection string.    
@@ -54,10 +54,12 @@ namespace UploadSpike.Controllers
             CloudBlobContainer container = blobClient.GetContainerReference(_configuration.GetValue<string>("BlobContainerName"));
             // This also does not make a service call; it only creates a local object.    
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(systemFileName);
+            
             await using (var data = files.OpenReadStream())
             {
                 await blockBlob.UploadFromStreamAsync(data);
             }
+            _imageDao.Post(systemFileName);
             return Ok("File Uploaded Successfully");
         }
 

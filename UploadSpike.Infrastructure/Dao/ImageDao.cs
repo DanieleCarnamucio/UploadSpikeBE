@@ -44,8 +44,7 @@ namespace UploadSpike.Infrastructure.Dao
             var path = "https://acadesteamfilestorage.blob.core.windows.net/filecontainer/" + param + ".png";
             var img = _dbContext.Images.Where(i => i.Path == path).ToList();
 
-            return img;
-           // return _dbContext.Images.SingleOrDefault(x => x.Path == param);
+            return img;          
         }
 
         //public  async Task<bool> UploadFileToStorage(Stream fileStream, string fileName,
